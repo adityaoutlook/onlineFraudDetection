@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Listing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>User Listing</h1>
+    </div>
+    <div id="userList"></div>
+    <button class="back-btn" onclick="window.history.back()">Back</button>
+    <script>
+    // Only allow admin to view this page
+    if (localStorage.getItem('adminView') !== 'true') {
+        document.body.innerHTML = '<h2>Access Denied</h2>';
+    }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

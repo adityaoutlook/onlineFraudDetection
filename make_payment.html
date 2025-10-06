@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>Make Payment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button onclick="window.location.href='dashboard.html'" style="position:fixed;top:14px;left:12px;width:28px;height:28px;background:#d32f2f;color:#fff;border:none;border-radius:6px;cursor:pointer;z-index:100;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,0.08);">&#8592;</button>
+    <header style="text-align:center;margin-top:2.5rem;">
+        <i class="fas fa-credit-card" style="font-size:2.2rem;color:#0057b8;margin-bottom:0.5rem;"></i>
+        <h1 style="font-size:1.3rem;color:#0a2342;font-weight:700;margin-bottom:0.2rem;">Make Payment</h1>
+        <p style="color:#322f2f;font-size:0.98rem;">Pay securely and instantly from your account.</p>
+    </header>
+    <main style="font-size:0.95rem;display:flex;justify-content:center;align-items:center;min-height:60vh;">
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;max-width:350px;width:100%;">
+            <form id="paymentForm">
+                <label for="recipient" style="font-weight:600;color:#0a2342;">Select Recipient:</label>
+                <select id="recipient" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;"></select>
+                <label for="amount" style="font-weight:600;color:#0a2342;">Amount (₹):</label>
+                <input type="number" id="amount" min="1" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;">
+                <label for="payPin" style="font-weight:600;color:#0a2342;">PIN:</label>
+                <input type="password" id="payPin" maxlength="4" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;">
+                <button type="submit" style="width:100%;background:#0057b8;color:#fff;font-weight:700;border:none;border-radius:6px;padding:0.7rem 0;cursor:pointer;">Pay</button>
+                <p id="paymentMessage" style="margin-top:1rem;"></p>
+            </form>
+        </div>
+    </main>
+    <script>
+    // Populate recipient dropdown with other users
+    document.addEventListener('DOMContentLoaded', function() {
+        const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const recipientSelect = document.getElementById('recipient');
+        recipientSelect.innerHTML = '';
+        users.filter(u => u.username !== user.username && u.role === 'user').forEach(u => {
+            const opt = document.createElement('option');
+            opt.value = u.username;
+            opt.textContent = u.username + (u.blacklisted ? ' (Blocked)' : '');
+            opt.disabled = !!u.blacklisted;
+            recipientSelect.appendChild(opt);
+        });
+    });
+
+    document.getElementById('paymentForm').onsubmit = function(e) {
+        e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const recipientUsername = document.getElementById('recipient').value;
+        const amount = Number(document.getElementById('amount').value);
+        const pin = document.getElementById('payPin').value;
+        const msg = document.getElementById('paymentMessage');
+        let transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+        // Fraud detection logic
+        const userTx = transactions.filter(t => t.username === user.username && t.status === 'Paid');
+        let lastTx = userTx.length ? userTx[userTx.length - 1] : null;
+        let now = Date.now();
+        let lastTime = lastTx ? new Date(lastTx.date).getTime() : 0;
+        let timeDiff = lastTime ? (now - lastTime) / 1000 : 999;
+        let suspicious = false;
+        // Check for payment within 20 seconds
+        if (timeDiff < 20) suspicious = true;
+        // Check for unusually large payment
+        let prevAmounts = userTx.slice(-7).map(t => t.amount);
+        let avg = prevAmounts.length ? prevAmounts.reduce((a,b) => a+b,0)/prevAmounts.length : 0;
+        if (avg > 0 && amount > avg * 2) suspicious = true;
+        if (suspicious) {
+            msg.style.color = 'red';
+            let fraudType = timeDiff < 20 ? 'Suspicious (Rapid Payment)' : 'Suspicious (Unusual Amount)';
+            msg.innerHTML = `<strong>Type:</strong> ${fraudType}<br>Your account is blocked due to suspicious activity. Contact admin.`;
+            user.blacklisted = true;
+            // Log suspicious activity for admin
+            let fraudAlerts = JSON.parse(localStorage.getItem('fraudAlerts') || '[]');
+            fraudAlerts.push({ 
+                username: user.username, 
+                type: fraudType, 
+                message: `Payment of ₹${amount} blocked. Reason: ${fraudType}.`,
+                date: new Date().toLocaleString()
+            });
+            localStorage.setItem('fraudAlerts', JSON.stringify(fraudAlerts));
+            // Update user status
+            const updatedUsers = users.map(u => u.username === user.username ? user : u);
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            return;
+        }
+        if (pin !== user.pin) {
+            msg.style.color = 'red';
+            msg.textContent = 'Incorrect PIN!';
+            return;
+        }
+        if (amount > user.balance) {
+            msg.style.color = 'red';
+            msg.textContent = 'Insufficient funds!';
+            return;
+        }
+        const recipient = users.find(u => u.username === recipientUsername);
+        if (!recipient || recipient.blacklisted) {
+            msg.style.color = 'red';
+            msg.textContent = 'Invalid or blocked recipient!';
+            return;
+        }
+        user.balance -= amount;
+        recipient.balance += amount;
+        // Update users in localStorage
+        const updatedUsers = users.map(u => {
+            if (u.username === user.username) return user;
+            if (u.username === recipient.username) return recipient;
+            return u;
+        });
+        localStorage.setItem('users', JSON.stringify(updatedUsers));
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        msg.style.color = 'green';
+        msg.textContent = `Payment of ₹${amount} to ${recipient.username} successful! New balance: ₹${user.balance}`;
+        // Add transaction to history
+        transactions.push({ username: user.username, to: recipient.username, date: new Date().toLocaleString(), amount, status: 'Paid' });
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+    };
+    </script>
+</body>
+</html>

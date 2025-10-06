@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>Fraud Alerts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button onclick="window.location.href='dashboard.html'" style="position:fixed;top:14px;left:12px;width:28px;height:28px;background:#d32f2f;color:#fff;border:none;border-radius:6px;cursor:pointer;z-index:100;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,0.08);">&#8592;</button>
+    <header style="text-align:center;margin-top:2.5rem;">
+        <i class="fas fa-exclamation-triangle" style="font-size:2.2rem;color:#d32f2f;margin-bottom:0.5rem;"></i>
+        <h1 style="font-size:1.3rem;color:#0a2342;font-weight:700;margin-bottom:0.2rem;">Fraud Alerts</h1>
+        <p style="color:#292727;font-size:0.98rem;">Stay informed about suspicious activity.</p>
+    </header>
+    <main style="font-size:0.95rem;display:flex;justify-content:center;align-items:center;min-height:60vh;">
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #d32f2f1a;padding:2rem 1.5rem;max-width:350px;width:100%;">
+            <ul id="fraudAlertsList" style="padding-left:1.2rem;"></ul>
+        </div>
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const alerts = JSON.parse(localStorage.getItem('fraudAlerts') || '[]');
+        document.getElementById('fraudAlertsList').innerHTML = alerts
+            .filter(a => a.username === user.username)
+            .map(a => `<li><strong>${a.type || 'Alert'}:</strong> ${a.message}</li>`)
+            .join('');
+    });
+    </script>
+</body>
+</html>

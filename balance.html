@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Balance - Online Payment Fraud Detection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar" style="background: linear-gradient(90deg,#0a2342 60%,#ffd700 100%);">
+        <a href="dashboard.html" class="navbar-title" style="color:#ffd700;text-decoration:none;font-weight:700;font-size:1.1em;">&#8592; Back to Dashboard <span style="background:#ffd700;color:#0a2342;padding:2px 10px;border-radius:12px;font-size:0.8em;margin-left:8px;vertical-align:middle;">PREMIUM LOOK</span></a>
+    </nav>
+    <main style="margin-top:56px;">
+        <div class="main-content" style="max-width:400px;margin:auto;padding:2rem 1.5rem;background:#fffbe6;border-radius:12px;border:2px solid #ffd700;box-shadow:0 0 12px #ffd70033;">
+            <div style="text-align:center;margin-bottom:1.5rem;">
+                <i class="fas fa-crown" style="font-size:2.2rem;color:#ffd700;"></i>
+                <h2 style="color:#bfa100;margin:0.5rem 0 0.2rem 0;">Premium Balance Check</h2>
+                <p style="color:#0a2342;font-weight:600;">Enjoy a premium look and secure experience</p>
+            </div>
+            <form id="pinForm">
+                <label for="pin" style="color:#0a2342;font-weight:600;">Enter PIN:</label>
+                <input type="password" id="pin" maxlength="4" required placeholder="Enter your PIN" style="margin-bottom:1rem;width:100%;">
+                <button type="submit" style="width:100%;background:#ffd700;color:#0a2342;font-weight:700;padding:0.5rem 0;border:none;border-radius:4px;">Check Balance</button>
+                <p id="pinMessage" style="margin-top:1rem;"></p>
+            </form>
+        </div>
+    </main>
+    <script>
+    // Simple PIN check for balance
+    const validPin = '1234';
+    const userBalance = 50000;
+    document.getElementById('pinForm').onsubmit = function(e) {
+        e.preventDefault();
+        const pin = document.getElementById('pin').value;
+        const msg = document.getElementById('pinMessage');
+        if (pin === validPin) {
+            msg.style.color = 'green';
+            msg.textContent = `Your balance is $${userBalance}`;
+        } else {
+            msg.style.color = '#d32f2f';
+            msg.textContent = 'Incorrect PIN!';
+        }
+    };
+    </script>
+</body>
+</html>

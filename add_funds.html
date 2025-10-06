@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>Add Funds</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        <button onclick="window.location.href='dashboard.html'" style="position:fixed;top:14px;left:12px;width:28px;height:28px;background:#d32f2f;color:#fff;border:none;border-radius:6px;cursor:pointer;z-index:100;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,0.08);">&#8592;</button>
+        <header style="text-align:center;margin-top:2.5rem;">
+            <i class="fas fa-wallet" style="font-size:2.2rem;color:#0057b8;margin-bottom:0.5rem;"></i>
+            <h1 style="font-size:1.3rem;color:#0a2342;font-weight:700;margin-bottom:0.2rem;">Add Funds</h1>
+            <p style="color:#2c2929;font-size:0.98rem;">Quickly add money to your account securely.</p>
+        </header>
+        <main style="font-size:0.95rem;display:flex;justify-content:center;align-items:center;min-height:60vh;">
+            <div style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;max-width:350px;width:100%;">
+                <form id="addFundsForm">
+                    <label for="bankSelect" style="font-weight:600;color:#0a2342;">Select Bank:</label>
+                    <select id="bankSelect" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;">
+                        <option value="bankA">State Bank of India</option>
+                        <option value="bankB">HDFC Bank</option>
+                    </select>
+                    <label for="addFundsAmount" style="font-weight:600;color:#0a2342;">Amount (₹):</label>
+                    <input type="number" id="addFundsAmount" min="1" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;">
+                    <label for="addFundsPin" style="font-weight:600;color:#0a2342;">PIN:</label>
+                    <input type="password" id="addFundsPin" maxlength="4" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;">
+                    <button type="submit" style="width:100%;background:#0057b8;color:#fff;font-weight:700;border:none;border-radius:6px;padding:0.7rem 0;cursor:pointer;">Add Funds</button>
+                    <p id="addFundsMessage" style="margin-top:1rem;"></p>
+                </form>
+            </div>
+        </main>
+    <script>
+    document.getElementById('addFundsForm').onsubmit = function(e) {
+        e.preventDefault();
+        const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const amount = Number(document.getElementById('addFundsAmount').value);
+        const pin = document.getElementById('addFundsPin').value;
+        const bank = document.getElementById('bankSelect').value;
+        const msg = document.getElementById('addFundsMessage');
+        let bankName = bank === 'bankA' ? 'State Bank of India' : 'HDFC Bank';
+        if (pin !== user.pin) {
+            msg.style.color = 'red';
+            msg.textContent = 'Incorrect PIN!';
+            return;
+        }
+        user.balance = (user.balance || 0) + amount;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        msg.style.color = 'green';
+        msg.textContent = `Funds added: ₹${amount} from ${bankName}. New balance: ₹${user.balance}`;
+    };
+    </script>
+</body>
+</html>

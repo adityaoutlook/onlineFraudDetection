@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header><h1>ONLINE FRAUD DETECTION SYSTEM</h1></header>
+    <button id="logoutBtn">Logout</button>
+    <main style="max-width:1200px;margin:auto;padding:2rem 1rem;">
+        <div style="display:flex;gap:2.5rem;align-items:flex-start;">
+            <!-- Registered Users Section -->
+            <section style="flex:2;background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;">
+                <h2 style="text-align:center;color:#0057b8;font-size:1.3rem;font-weight:700;margin-bottom:1.2rem;">Registered Users</h2>
+                <div id="userCount" style="margin-bottom: 1rem;text-align:center;"></div>
+                <table id="userTable" style="margin:0 auto;width:100%;border-collapse:collapse;">
+                    <thead>
+                        <tr style="background:#f4f8fb;"><th>Username</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            <!-- Suspicious Activity Section -->
+            <section style="flex:1;background:#fff;border-radius:12px;box-shadow:0 2px 16px #d32f2f1a;padding:2rem 1.5rem;min-width:280px;">
+                <h3 style="text-align:center;color:#d32f2f;font-size:1.15rem;font-weight:700;margin-bottom:1.2rem;">Suspicious Activity</h3>
+                <ul id="fraudActivityList" style="list-style:none;padding:0;margin:0;"></ul>
+            </section>
+        </div>
+        <!-- Quick Actions Section -->
+        <div class="dashboard-cards" style="display:flex;justify-content:center;gap:2rem;margin-top:2.5rem;">
+            <a href="user_listing.html" class="dashboard-card" style="background:#e3f2fd;border-radius:10px;padding:1.2rem 2rem;box-shadow:0 1px 8px #0057b81a;text-align:center;min-width:160px;">
+                <i class="fas fa-users" style="font-size:1.5rem;color:#0057b8;"></i>
+                <span style="display:block;margin-top:0.5rem;color:#0a2342;font-weight:600;">All Users</span>
+            </a>
+            <a href="block_unblock.html" class="dashboard-card" style="background:#ffebee;border-radius:10px;padding:1.2rem 2rem;box-shadow:0 1px 8px #d32f2f1a;text-align:center;min-width:160px;">
+                <i class="fas fa-ban" style="font-size:1.5rem;color:#d32f2f;"></i>
+                <span style="display:block;margin-top:0.5rem;color:#0a2342;font-weight:600;">Block/Unblock Users</span>
+            </a>
+        </div>
+    </main>
+    <script src="admin_dashboard.js"></script>
+    <script>
+    // Show suspicious activity in right panel
+    document.addEventListener('DOMContentLoaded', function() {
+        const fraudAlerts = JSON.parse(localStorage.getItem('fraudAlerts') || '[]');
+        const list = document.getElementById('fraudActivityList');
+        if (list) {
+            if (fraudAlerts.length === 0) {
+                list.innerHTML = '<li style="color:#666;text-align:center;">No suspicious activity detected.</li>';
+            } else {
+                const recentAlerts = fraudAlerts.slice(-10).reverse();
+                list.innerHTML = recentAlerts.map(a => `<li style="margin-bottom:0.7rem;border-bottom:1px solid #eee;padding-bottom:0.5rem;"><b>${a.username}</b> <span style="color:#d32f2f;">${a.type || a.reason}</span><br>Amount: ₹${a.amount || '-'}<br>Date: ${a.date}</li>`).join('');
+            }
+        }
+    });
+    </script>
+</body>
+</html>

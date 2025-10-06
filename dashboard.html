@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Online Payment Fraud Detection</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body style="background:#f7f9fb;">
+    <header class="hero" style="background: linear-gradient(90deg,#0a2342 60%,#0057b8 100%); color: #fff; padding: 2.5rem 0 1.5rem 0; text-align: center; position:relative;">
+    <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.5rem;"><i class="fas fa-shield-alt"></i> ONLINE FRAUD DETECTION SYSTEM</h1>
+        <p style="font-size:1.1rem;">Welcome User, Manage your payments, monitor fraud, and view analytics in one place.</p>
+        <button id="logoutBtnTop" aria-label="Logout" title="Logout" style="position:fixed;right:12px;top:12px;background:#fff;color:#0a2342;border:none;padding:0;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,0.08);font-size:12px;">
+            <i class="fas fa-sign-out-alt" style="font-size:12px;"></i>
+        </button>
+    </header>
+    <nav style="background:#fff;border-bottom:1px solid #e0e6ed;padding:0.7rem 0;text-align:center;">
+    <a href="dashboard.html" class="sidebar-item" style="margin:0 1.2rem;color:#0057b8;font-weight:600;">Dashboard</a>
+    <a href="make_payment.html" class="sidebar-item" style="margin:0 1.2rem;color:#0057b8;font-weight:600;">Make Payment</a>
+    <a href="add_funds.html" class="sidebar-item" style="margin:0 1.2rem;color:#0057b8;font-weight:600;">Add Funds</a>
+    <a href="transaction_history.html" class="sidebar-item" style="margin:0 1.2rem;color:#0057b8;font-weight:600;">Transaction History</a>
+    <a href="fraud_alerts.html" class="sidebar-item" style="margin:0 1.2rem;color:#0057b8;font-weight:600;">Fraud Alerts</a>
+    <a href="file_fraud_check.html" class="sidebar-item" style="margin:0 1.2rem;color:#0057b8;font-weight:600;">File Fraud Check</a>
+    </nav>
+    <main style="max-width:1200px;margin:auto;padding:2rem 1rem;">
+        <section class="features-section" style="display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;margin-bottom:2.5rem;">
+            <div class="feature-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;max-width:340px;flex:1 1 300px;text-align:center;">
+                <i class="fas fa-robot" style="font-size:2.2rem;color:#0057b8;margin-bottom:0.7rem;"></i>
+                <h3 style="color:#0a2342;font-size:1.2rem;margin-bottom:0.5rem;">AI & Machine Learning</h3>
+                <p style="color:#333;font-size:1rem;">Detect fraud in real time using advanced algorithms and data-driven insights.</p>
+            </div>
+            <div class="feature-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;max-width:340px;flex:1 1 300px;text-align:center;">
+                <i class="fas fa-bolt" style="font-size:2.2rem;color:#0057b8;margin-bottom:0.7rem;"></i>
+                <h3 style="color:#0a2342;font-size:1.2rem;margin-bottom:0.5rem;">Instant Alerts</h3>
+                <p style="color:#333;font-size:1rem;">Get notified instantly of suspicious activity and take action before it's too late.</p>
+            </div>
+            <div class="feature-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;max-width:340px;flex:1 1 300px;text-align:center;">
+                <i class="fas fa-chart-line" style="font-size:2.2rem;color:#0057b8;margin-bottom:0.7rem;"></i>
+                <h3 style="color:#0a2342;font-size:1.2rem;margin-bottom:0.5rem;">Analytics Dashboard</h3>
+                <p style="color:#333;font-size:1rem;">Visualize trends, monitor transactions, and analyze risk with interactive dashboards.</p>
+            </div>
+            <div class="feature-card" style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;max-width:340px;flex:1 1 300px;text-align:center;">
+                <i class="fas fa-user-shield" style="font-size:2.2rem;color:#0057b8;margin-bottom:0.7rem;"></i>
+                <h3 style="color:#0a2342;font-size:1.2rem;margin-bottom:0.5rem;">Enterprise Security</h3>
+                <p style="color:#333;font-size:1rem;">Bank-grade encryption and compliance for peace of mind and regulatory confidence.</p>
+            </div>
+        </section>
+        <section id="dashboardSection" class="feature-section" style="margin-bottom:2.5rem;">
+            <div id="userInfoPanel" style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:1rem 1.5rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <div style="width:56px;height:56px;border-radius:50%;background:#0057b8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem">U</div>
+                    <div>
+                        <div id="userDisplayName" style="font-weight:700;color:#0a2342;font-size:1.05rem;">User</div>
+                        <div id="userPhone" style="color:#666;font-size:0.95rem;">+91-xxxxxxxxxx</div>
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <div id="userBalanceDisplay" style="font-weight:700;color:#0a2342;font-size:1.05rem;display:none;">Balance: ₹0</div>
+                    <div id="userRoleDisplay" style="color:#666;font-size:0.95rem;">Role: user</div>
+                    <div id="userBlockedDisplay" style="color:#d32f2f;font-weight:700;margin-top:0.25rem;display:none;">ACCOUNT BLOCKED</div>
+                <script>
+                // Only show balance for user role
+                document.addEventListener('DOMContentLoaded', function() {
+                    var user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    var balanceDiv = document.getElementById('userBalanceDisplay');
+                    var roleDiv = document.getElementById('userRoleDisplay');
+                    if (user.role === 'user') {
+                        balanceDiv.style.display = 'block';
+                        balanceDiv.textContent = 'Balance: ₹' + (user.balance || 0);
+                        roleDiv.textContent = 'Role: user';
+                    } else {
+                        balanceDiv.style.display = 'none';
+                        roleDiv.textContent = 'Role: admin';
+                    }
+                });
+                </script>
+                </div>
+            </div>
+            <div class="project-desc" style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;">
+                <h2 class="highlight-heading" style="color:#0a2342;">Project Overview</h2>
+                <ul class="feature-keypoints">
+                    <li><b>Secure Login & User Dashboard:</b> Access your account, view features, and manage transactions securely.</li>
+                    <li><b>Real-Time Fraud Detection:</b> Every transaction is checked using rule-based and machine learning models for maximum safety.</li>
+                    <li><b>Alerts & History:</b> Get instant alerts for suspicious activity and review your transaction history anytime.</li>
+                </ul>
+                    <div class="desc-lines">
+                        <p>This project demonstrates a modern online payment fraud detection system with a user-friendly interface and robust backend logic.</p>
+                        <p>It combines rule-based checks and machine learning to identify and prevent fraudulent transactions in real time.</p>
+                        <p>All user actions are tracked, and alerts are generated for any suspicious activity, ensuring maximum security for online payments.</p>
+                    </div>
+                </div>
+        </section>
+        <div class="section-title" style="text-align:center;color:#0a2342;font-size:1.7rem;font-weight:700;margin-top:3rem;">What Our Clients Say</div>
+        <section class="testimonials" style="max-width:900px;margin:2.5rem auto;background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem;">
+            <div class="testimonial-quote" style="font-style:italic;color:#0057b8;margin-bottom:0.5rem;">"The fraud detection accuracy and support are unmatched!"</div>
+            <div class="testimonial-author" style="color:#0a2342;font-weight:600;">- NEELESH PRAJAPATI</div>
+            <div class="testimonial-quote" style="font-style:italic;color:#0057b8;margin-bottom:0.5rem;">"We trust this platform for all our payment security needs."</div>
+            <div class="testimonial-author" style="color:#0a2342;font-weight:600;">- ADARSH PANDEY</div>
+        </section>
+        <!-- Frequently Asked Questions section removed as requested -->
+        <div class="section-title" style="text-align:center;color:#0a2342;font-size:1.7rem;font-weight:700;margin-top:3rem;">Contact Us</div>
+        <section class="contact-section" style="max-width:900px;margin:2.5rem auto;background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem;">
+            <form>
+                <label for="contactName" style="font-weight:600;color:#0a2342;">Name</label>
+                <input type="text" id="contactName" placeholder="Your Name" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;">
+                <label for="contactEmail" style="font-weight:600;color:#0a2342;">Email</label>
+                <input type="email" id="contactEmail" placeholder="Your Email" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;">
+                <label for="contactMsg" style="font-weight:600;color:#0a2342;">Message</label>
+                <textarea id="contactMsg" rows="4" placeholder="How can we help you?" required style="width:100%;margin-bottom:1rem;border-radius:6px;border:1px solid #ccc;padding:0.5rem;"></textarea>
+                <button type="submit" style="background:#0057b8;color:#fff;font-weight:700;border:none;border-radius:6px;padding:0.7rem 2rem;cursor:pointer;">Send Message</button>
+            </form>
+        </section>
+    </main>
+    <footer style="text-align:center;padding:2rem 0;color:#888;font-size:0.98em;">
+        &copy; 2025 Payment Fraud Detection. All rights reserved. | Inspired by Visa
+    </footer>
+            </section>
+            <!-- Add Funds Section (moved outside dashboardSection) -->
+            <section id="addFundsSection" class="feature-section" style="display:none;">
+                <h2 class="highlight-heading">Add Funds to Your Account</h2>
+                <div class="add-funds-box" style="margin-top:1rem;padding:1.5rem;background:#f4f8fb;border-radius:8px;max-width:400px;">
+                    <form id="addFundsForm">
+                        <label for="addFundsAmount">Amount (₹):</label>
+                        <input type="number" id="addFundsAmount" min="1" required placeholder="Enter amount in rupees" style="margin-bottom:1rem;width:100%;">
+                        <label for="addFundsPin">Enter PIN:</label>
+                        <input type="password" id="addFundsPin" maxlength="4" required placeholder="Enter your PIN" style="margin-bottom:1rem;width:100%;">
+                        <button type="submit" style="width:100%;background:#1976d2;color:white;padding:0.5rem 0;border:none;border-radius:4px;">Add Funds</button>
+                        <p id="addFundsMessage" style="margin-top:1rem;"></p>
+                    </form>
+                </div>
+            </section>
+            <section id="transactionSection" class="feature-section" style="display:none;">
+                <h2 class="highlight-heading">Make Payment</h2>
+                <form id="paymentForm">
+                    <label for="amount">Amount (₹):</label>
+                    <input type="number" id="amount" min="1" required placeholder="Enter amount in rupees">
+                    <label for="payPin">Enter PIN:</label>
+                    <input type="password" id="payPin" maxlength="4" required placeholder="Enter your PIN">
+                    <button type="submit">Pay</button>
+                    <p id="paymentMessage"></p>
+                </form>
+            </section>
+            <section id="historySection" class="feature-section" style="display:none;">
+                <h2 class="highlight-heading">Transaction History & Analytics</h2>
+                <button id="exportHistoryBtn" style="float:right;margin-bottom:1rem;">Export Weekly</button>
+                <table id="transactionsTable" style="width:100%;border-collapse:collapse;margin-bottom:1rem;">
+                    <thead>
+                        <tr style="background:#f4f8fb;">
+                            <th>Date/Time</th>
+                            <th>Amount ($)</th>
+                            <th>Risk Score</th>
+                            <th>Status</th>
+                            <th>Device</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsTableBody"></tbody>
+                </table>
+                <div id="historyChartContainer" style="max-width:400px;margin:auto;">
+                    <canvas id="historyChart" height="120"></canvas>
+                </div>
+            </section>
+            <section id="fraudSection" class="feature-section" style="display:none;">
+                <h2 class="highlight-heading">Fraud Alerts & Notifications</h2>
+                <ul id="fraudAlertsList" class="transactions-list"></ul>
+                <div id="notificationPlaceholder" style="margin-top:1rem;color:#1976d2;font-size:1.05rem;"></div>
+            </section>
+            <section id="fileSection" class="feature-section" style="display:none;">
+                <h2 class="highlight-heading">File Fraud Check & ML Model</h2>
+                <form id="fileForm">
+                    <label for="fraudFile">Upload weekly files:</label>
+                    <input type="file" id="fraudFile" accept=".csv,.xlsx,.xls,.txt">
+                    <button type="submit">Check File</button>
+                    <p id="fileMessage"></p>
+                </form>
+                <div style="margin-top:1.5rem;">
+                    <label for="mlModelUpload"><b>Upload/Train ML Model (placeholder):</b></label>
+                    <input type="file" id="mlModelUpload" accept=".pkl,.h5,.onnx,.json">
+                    <button id="trainModelBtn">Train Model</button>
+                    <p id="mlModelMessage"></p>
+                </div>
+                <div class="sample-files">
+                    <strong>Weekly Files:</strong>
+                    <ul>
+                        <li><a href="sample_data/fraud1.csv" download>Weekly Fraud Sample 1</a></li>
+                        <li><a href="sample_data/fraud2.csv" download>Weekly Fraud Sample 2</a></li>
+                        <li><a href="sample_data/legit1.csv" download>Weekly Legit Sample 1</a></li>
+                        <li><a href="sample_data/legit2.csv" download>Weekly Legit Sample 2</a></li>
+                    </ul>
+                </div>
+            </section>
+            <!-- Other Features Section -->
+            <section id="otherFeaturesSection" class="feature-section" style="display:none;">
+                <h2 class="highlight-heading">Other Features</h2>
+                <ul class="feature-keypoints">
+                    <li><b>Multi-Factor Authentication:</b> Enhance account security with OTP and device verification.</li>
+                    <li><b>Role-Based Access Control:</b> Differentiate access for admin and users for sensitive actions.</li>
+                    <li><b>Downloadable Reports:</b> Export transaction and fraud data for analysis.</li>
+                    <li><b>Customizable Rules:</b> Admins can set fraud detection rules and thresholds.</li>
+                    <li><b>Integration with External APIs:</b> Connect with payment gateways and KYC services.</li>
+                    <li><b>Mobile-Friendly Design:</b> Responsive UI for all devices.</li>
+                </ul>
+            </section>
+            <!-- API Integration Placeholder -->
+            <section id="apiSection" class="feature-section" style="display:none;">
+                <h2 class="highlight-heading">API Integration</h2>
+                <p>REST API endpoint for fraud check (demo): <code>/api/check_fraud</code></p>
+                <p><i>Note: In a real deployment, this would be a backend endpoint.</i></p>
+            </section>
+        </main>
+    </div>
+    <script src="chart.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+    // Sidebar navigation logic for new Add Funds section
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.feature-section').forEach(sec => sec.style.display = 'none');
+            const sectionId = this.getAttribute('data-section');
+            if (sectionId) {
+                document.getElementById(sectionId).style.display = '';
+            }
+        });
+    });
+    // (admin functionality removed)
+
+    // Handle add funds form submit for users
+    document.getElementById('addFundsForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const msg = document.getElementById('addFundsMessage');
+        // Check if current user is blocked (from localStorage)
+        try {
+            const stored = localStorage.getItem('currentUser');
+            if (stored) {
+                const cu = JSON.parse(stored);
+                if (cu.blacklisted) {
+                    msg.style.color = '#d32f2f';
+                    msg.textContent = 'Account is blocked. Cannot add funds.';
+                    return;
+                }
+            }
+        } catch (err) {
+            // ignore parse errors
+        }
+        const amount = document.getElementById('addFundsAmount').value;
+        const pin = document.getElementById('addFundsPin').value;
+        const msgLocal = document.getElementById('addFundsMessage');
+        const msgRef = msgLocal || msg;
+        
+        const msgEl = msgRef;
+        // validation
+        if (!amount || amount <= 0) {
+            msgEl.style.color = '#d32f2f';
+            msgEl.textContent = 'Enter a valid amount.';
+            return;
+        }
+        if (!pin || pin.length !== 4) {
+            msgEl.style.color = '#d32f2f';
+            msgEl.textContent = 'Enter a valid 4-digit PIN.';
+            return;
+        }
+        // Simulate add funds locally (no backend).
+        const added = Number(amount);
+        try {
+            // Update userBalance and persist
+            if (!window.validUser) {
+                const stored = localStorage.getItem('currentUser');
+                if (stored) window.validUser = JSON.parse(stored);
+            }
+            window.userBalance = (window.userBalance || 0) + added;
+            if (window.validUser) {
+                window.validUser.balance = window.userBalance;
+                // update users list
+                try {
+                    const all = getUsers();
+                    const idx = all.findIndex(u => u.username === window.validUser.username);
+                    if (idx !== -1) {
+                        all[idx].balance = window.userBalance;
+                        saveUsers(all);
+                    }
+                } catch (err) {}
+                localStorage.setItem('currentUser', JSON.stringify(window.validUser));
+            }
+            msg.style.color = 'green';
+            msg.textContent = `Funds added: ₹${added}. New balance: ₹${window.userBalance}`;
+            // Refresh dashboard UI
+            try { updateDashboard(); } catch (e) {}
+            try { populateUserInfo(); } catch (e) {}
+        } catch (err) {
+            msg.style.color = '#d32f2f';
+            msg.textContent = 'Failed to add funds.';
+        }
+    };
+    </script>
+</body>
+</html>

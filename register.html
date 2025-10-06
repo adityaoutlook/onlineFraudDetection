@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Online Payment Fraud Detection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="bg-blue-800 text-white p-4 shadow-1g">
+        <div class="flex items-center space-x-4">
+            <i class="fas fa-shield-alt text-2xl"></i>
+            <h1 class="text-xl font-bold">Fraud Detection System</h1>
+        </div>
+    </nav>
+    <main>
+        <div class="login-bg"></div>
+        <div class="login-card">
+            <div class="login-icon">
+                <svg width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="#0a2342"/><path d="M24 14c-4.418 0-8 2.686-8 6v3.5c0 2.485 2.239 4.5 5 4.5h6c2.761 0 5-2.015 5-4.5V20c0-3.314-3.582-6-8-6zm0 2c3.314 0 6 1.791 6 4v3.5c0 1.379-1.567 2.5-3.5 2.5h-5c-1.933 0-3.5-1.121-3.5-2.5V20c0-2.209 2.686-4 6-4zm-2 10a2 2 0 104 0h-4z" fill="#fff"/></svg>
+            </div>
+            <h2>Register</h2>
+            <form id="registerForm">
+                <label for="regUsername">Username</label>
+                <input type="text" id="regUsername" placeholder="Enter username" required>
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" placeholder="Enter password" required>
+                <label for="regPin">PIN (4 digits)</label>
+                <input type="password" id="regPin" maxlength="4" placeholder="Enter PIN" required>
+                <label for="regPhone">Mobile Phone (optional)</label>
+                <input type="tel" id="regPhone" placeholder="+91XXXXXXXXXX" pattern="\+?\d{7,15}">
+                <label style="margin-top:0.5rem;display:block;font-weight:600;color:#0a2342;">Register as</label>
+                <div style="margin-bottom:1rem;">
+                    <label style="margin-right:1rem;"><input type="radio" name="regRole" value="user" checked> User</label>
+                    <label><input type="radio" name="regRole" value="admin"> Admin</label>
+                </div>
+                <div id="referralDiv" style="display:none; margin-bottom:1rem;">
+                    <label for="referralCode">Referral Code (Admin only)</label>
+                    <input type="text" id="referralCode" placeholder="Enter referral code">
+                </div>
+                <button type="submit">Register</button>
+                <p id="registerMessage"></p>
+            </form>
+            <div class="login-demo">Already have an account? <a href="index.html">Login</a></div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script>
+    // Show referral code input only for admin registration
+    document.addEventListener('DOMContentLoaded', function() {
+        const adminRadio = document.querySelector('input[name="regRole"][value="admin"]');
+        const userRadio = document.querySelector('input[name="regRole"][value="user"]');
+        const referralDiv = document.getElementById('referralDiv');
+        if (adminRadio && userRadio && referralDiv) {
+            adminRadio.addEventListener('change', function() {
+                if (adminRadio.checked) {
+                    referralDiv.style.display = 'block';
+                }
+            });
+            userRadio.addEventListener('change', function() {
+                if (userRadio.checked) {
+                    referralDiv.style.display = 'none';
+                }
+            });
+        }
+
+        const form = document.getElementById('registerForm');
+        if (!form) return;
+        form.addEventListener('submit', function(e) {
+            const role = document.querySelector('input[name="regRole"]:checked').value;
+            if (role === 'admin') {
+                const referralCode = document.getElementById('referralCode').value;
+                if (referralCode !== '5500') {
+                    e.preventDefault();
+                    document.getElementById('registerMessage').textContent = 'Invalid referral code for admin registration.';
+                    return;
+                }
+            }
+            // ...existing code...
+        });
+    });
+    </script>
+</body>
+</html>

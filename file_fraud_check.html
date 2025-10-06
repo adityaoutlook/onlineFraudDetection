@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <title>File Fraud Check</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button onclick="window.location.href='dashboard.html'" style="position:fixed;top:14px;left:12px;width:28px;height:28px;background:#d32f2f;color:#fff;border:none;border-radius:6px;cursor:pointer;z-index:100;font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,0.08);">&#8592;</button>
+    <header style="text-align:center;margin-top:2.5rem;">
+        <i class="fas fa-file-upload" style="font-size:2.2rem;color:#0057b8;margin-bottom:0.5rem;"></i>
+        <h1 style="font-size:1.3rem;color:#0a2342;font-weight:700;margin-bottom:0.2rem;">File Fraud Check</h1>
+        <p style="color:#2b2828;font-size:0.98rem;">Upload weekly files to check for fraud.</p>
+    </header>
+    <main style="font-size:0.95rem;display:flex;justify-content:center;align-items:center;min-height:60vh;">
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 16px #0057b81a;padding:2rem 1.5rem;max-width:350px;width:100%;">
+            <form id="fileForm">
+                <label for="fraudFile" style="font-weight:600;color:#0a2342;">Upload weekly file:</label>
+                <input type="file" id="fraudFile" accept=".csv,.xlsx,.xls,.txt" style="width:100%;margin-bottom:1rem;">
+                <button type="submit" style="width:100%;background:#0057b8;color:#fff;font-weight:700;border:none;border-radius:6px;padding:0.7rem 0;cursor:pointer;">Check File</button>
+                <p id="fileMessage" style="margin-top:1rem;"></p>
+            </form>
+        </div>
+    </main>
+    <script>
+    document.getElementById('fileForm').onsubmit = function(e) {
+        e.preventDefault();
+        const file = document.getElementById('fraudFile').files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const text = evt.target.result;
+            const msg = document.getElementById('fileMessage');
+            if (/fraud/i.test(text)) {
+                msg.style.color = 'red';
+                msg.textContent = 'Fraudulent payments detected in file!';
+            } else {
+                msg.style.color = 'green';
+                msg.textContent = 'All payments in file are legit!';
+            }
+        };
+        reader.readAsText(file);
+    };
+    </script>
+</body>
+</html>

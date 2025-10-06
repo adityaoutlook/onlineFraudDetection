@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Main Admin Panel</h1>
+    <section>
+        <h2>System Statistics</h2>
+        <p>Total Users: <span id="totalUsers">Loading...</span></p>
+        <p>Total Admins: <span id="totalAdmins">Loading...</span></p>
+        <p>Total Transactions: <span id="totalTransactions">Loading...</span></p>
+    </section>
+    <section>
+        <h2>All Users Management</h2>
+        <table id="mainAdminUserTable">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User rows will be populated here -->
+            </tbody>
+        </table>
+    </section>
+    <section>
+        <h2>Admin Management</h2>
+        <table id="mainAdminAdminTable">
+            <thead>
+                <tr>
+                    <th>Admin ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Admin rows will be populated here -->
+            </tbody>
+        </table>
+    </section>
+    <script src="mainadmin.js"></script>
+</body>
+</html>

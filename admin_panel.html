@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - User Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+        <button id="logoutBtn">Logout</button>
+    </header>
+    <main>
+        <section>
+            <h2>Registered Users</h2>
+            <table id="userTable" style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr><th>Username</th><th>Status</th><th>Fraud/Legit</th><th>Action</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const tbody = document.getElementById('userTable').querySelector('tbody');
+        tbody.innerHTML = users.map(u => {
+            // Demo: status is blocked/active, fraud/legit is random
+            const fraudStatus = u.blacklisted ? 'Fraud' : 'Legit';
+            return `<tr><td>${u.username}</td><td>${u.blacklisted ? 'Blocked' : 'Active'}</td><td>${fraudStatus}</td><td><button onclick=\"toggleBlock('${u.username}')\">${u.blacklisted ? 'Unblock' : 'Block'}</button></td></tr>`;
+        }).join('');
+    });
+    function toggleBlock(username) {
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const idx = users.findIndex(u => u.username === username);
+        if (idx !== -1) {
+            users[idx].blacklisted = !users[idx].blacklisted;
+            localStorage.setItem('users', JSON.stringify(users));
+            location.reload();
+        }
+    }
+    document.getElementById('logoutBtn').onclick = function() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+    };
+    </script>
+</body>
+</html>
